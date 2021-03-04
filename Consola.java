@@ -18,4 +18,8 @@ public class Consola {
   public String leerArchivo(String nombreArchivo){
     return null;
   }
+
+  String A;
 }
+
+
