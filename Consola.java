@@ -19,7 +19,6 @@ public class Consola {
     return null;
   }
 
-  String A;
 }
 
 
