@@ -1,5 +1,11 @@
+/**
+ * UVG-Algoritmos y Estructura de datos - Sección 10
+ * Catedrático: Douglas Barrios
+ * @author Grupo#1
+ * @version 1
+ */
+ 
 public interface Operable {
-
 
 //Contrato para la interface Operable
 
