@@ -4,23 +4,24 @@
  * @author Grupo#1
  * @version 1
  */
- 
-import java.util.HashMap;
-import java.util.Stack;
-import java.util.Scanner;
+ import java.util.*;
 
 public class Interprete {
   
-  private Stack<String> datos;
+  private Stack<String> parentesis;
   private HashMap<String, Funcion> funciones;
+  private List<Object> operations;
 
   public Interprete(){
-
+    
   }
 
-  public void interpretar(String expresion){
-    String res = parse(expresion);
-    System.out.println(res);
+  public String interpretar(String expresion){
+    String result = parse(expresion);
+    if(result.equals("error"))
+      return result;
+
+    return "";
   }
 
   public String evaluar(){
@@ -29,28 +30,48 @@ public class Interprete {
 
   private String parse(String expresion){
     String resultado = "";
-    datos = new Stack<String>();  
-    Scanner scan = new Scanner(resultado);
+    parentesis = new Stack<String>();
+    operations = new LinkedList<Object>(); 
+    Scanner scan = new Scanner(expresion);
     while(scan.hasNextLine()){
-      String tempLine = scan.nextLine();
+      String tempLine = scan.nextLine().trim();
       if(!tempLine.trim().substring(0, 1).equals(";"))
       {
+        tempLine = tempLine.replaceAll("\\(", "\\ ( ");
+        tempLine = tempLine.replaceAll("\\)", "\\ ) ");
+        tempLine = tempLine.replaceAll("\\+", "\\ + ");
+        tempLine = tempLine.replaceAll("\\-", "\\ - ");
+        tempLine = tempLine.replaceAll("\\*", "\\ * ");
+        tempLine = tempLine.replaceAll("\\/", "\\ / ");
         Scanner tempScan = new Scanner(tempLine);
-        while(tempScan.hasNext()){
-          String temp = tempScan.next();
-          if(temp == "(")
-            datos.push(temp);
-          else if(temp == ")")
-            datos.pop();
-          else if(temp != " ")
-            resultado += temp;
-        }
+        operations = parseExpresion(tempScan);
+        System.out.println(operations);
       }
-
     }
 
-    return resultado;
+    return "done";
   }
+
+  private List<Object> parseExpresion(Scanner tempScan){
+    List<Object> tempList = new LinkedList<Object>();
+    while(tempScan.hasNext()){
+      String temp = tempScan.next().trim().strip();
+      if(temp.equals("(")){
+        parentesis.push(temp);
+        tempList.add(parseExpresion(tempScan));
+      }
+      else if(temp.equals(")")){
+        parentesis.pop();
+        return tempList;
+      }
+      else if(!temp.isBlank()){
+        tempList.add(temp);
+      }
+    }
+    return tempList;
+  }
+
+
 
   public void crearFuncion(){
 

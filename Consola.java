@@ -8,8 +8,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.sun.org.apache.xml.internal.utils.StringBufferPool;
-
 import java.io.File;
 
 public class Consola {
@@ -23,6 +21,7 @@ public class Consola {
   
   public void Start(){
     while(true){
+      System.out.print("CL-USER >");
       String input = scan.nextLine();
       interprete.interpretar(input);
     }
@@ -30,7 +29,7 @@ public class Consola {
 
   public ArrayList<String> leerArchivo(String nombreArchivo){
 
-    ArrayList<String> Info;
+    ArrayList<String> Info = new ArrayList<String>();
 
     try {
 
