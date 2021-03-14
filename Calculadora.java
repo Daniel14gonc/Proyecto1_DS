@@ -37,7 +37,7 @@ public class Calculadora implements CalculadoraGeneral{
         //Pre: Validar que se haya ingresado un numero.
         //Post: Determinar si se debe almacenar el numero en el vector o se debe hacer una operacion.
         stack = new Stack<Integer>();
-        try {
+        try {            
             for(int i = 0; i<expresion.length(); i++){
                 //Obtener cada caracter del string.
                 char op = expresion.charAt(i);

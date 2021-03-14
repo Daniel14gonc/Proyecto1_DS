@@ -27,11 +27,17 @@ public class Consola {
       String input = scan.nextLine();
       if(input.contains("txt")){
         ArrayList<String> operaciones = leerArchivo(input);
+        String temporal = ArchivoToString(operaciones);
         System.out.print("\nResultados: \n");
         for(String da : operaciones){
           interprete.interpretar(da);
         }
+        /*System.out.println();
         System.out.println();
+        System.out.println(temporal);
+        System.out.println();
+        System.out.println();*/
+
       }
       else {
         interprete.interpretar(input);
@@ -61,8 +67,17 @@ public class Consola {
     return Info;
   }
 
-  
+  public static String ArchivoToString(ArrayList<String> Lista){
+    String Acumulador = "";
+        
+    for(String a: Lista){
+      Acumulador += (a + "\n");
+    }
+    Acumulador = Acumulador.trim();
+    return Acumulador;
+  }
 
+  
 }
 
 

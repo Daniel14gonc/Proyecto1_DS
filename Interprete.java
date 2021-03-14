@@ -65,7 +65,7 @@ public class Interprete {
         }
 
       }
-      //System.out.println(acum);
+      System.out.println(acum);
       res = converter.ConverterPrePos(acum);
       return calculadora.Calculo(res);
     }
