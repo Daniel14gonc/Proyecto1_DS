@@ -11,14 +11,17 @@ import java.util.LinkedList;
 import java.util.HashMap;
 
 public class Funcion {
-/*
   private String nombre;
-  private HashMap<String, String> Parametros;
-  private LinkedList<String> tasks;
+  private HashMap<String, String> parametros;
+  private String tasks;
 
   public Funcion (String Nombre, HashMap<String, String> Parametros, LinkedList<String> actions){
 
 
+  }
+
+  public Funcion(){
+    parametros = new HashMap<String, String>();
   }
 
   public void setNombre(String nombre){
@@ -30,12 +33,18 @@ public class Funcion {
   }
 
 
-  public LinkedList<String> getActions(){
+  public String getActions(){
 
-    LinkedList<String> Param = null;
+    return tasks;
 
-    return Param;
+  }
 
+  public void addParameter(String parameter){
+    parametros.put(parameter, "");
+  }
+
+  public void setTasks(String body){
+    tasks = body;
   }
 
 
@@ -45,5 +54,5 @@ public class Funcion {
 
     return Param;
 
-  }*/
+  }
 }

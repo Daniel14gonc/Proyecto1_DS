@@ -15,7 +15,7 @@ public class Interprete {
   private Converter converter;
 
   public Interprete(){
-    
+    funciones = new HashMap<String, Funcion>();
   }
 
   public String interpretar(String expresion){
@@ -41,7 +41,7 @@ public class Interprete {
       converter = Converter.gConverter();
       String res;
       for(int i =0;i<ListEvaluar.size();i++)
-      {
+      {        
         if(ListEvaluar.get(i) instanceof String )
         {
           acum+=(String) ListEvaluar.get(i);
@@ -53,22 +53,21 @@ public class Interprete {
             acum+= evaluar((List<Object>)ListEvaluar.get(i));
           }
         }
-
-
-        /*
+      
+        
         switch(acum) 
         {
-          case acum.Trim.Substring(0.4)== "defun":
+          case acum.trim.Substring(0.4)== "defun":
             Funcion funcion = new Funcion();
           default:
             res = converter.ConverterPrePos(acum);
           break;
-        }*/
+        }
 
       }
-    //Mientras tanto que retorne esto 
-    res = converter.ConverterPrePos(acum);
-    return calculadora.Calculo(res);
+      //System.out.println(acum);
+      res = converter.ConverterPrePos(acum);
+      return calculadora.Calculo(res);
     }
     catch(Exception e){
       throw new Exception(e.getMessage());
@@ -83,6 +82,7 @@ public class Interprete {
     String temp = deleteComments(expresion);
     temp = temp.replaceAll("\\(", "\\ ( ");
     temp = temp.replaceAll("\\)", "\\ ) ");
+    temp = temp.replaceAll("\\+", "\\ + ");
     temp = temp.replaceAll("\\-", "\\ - ");
     temp = temp.replaceAll("\\*", "\\ * ");
     temp = temp.replaceAll("\\/", "\\ / ");
@@ -95,15 +95,17 @@ public class Interprete {
     Scanner scan = new Scanner(expresion);
     String result = "";
     while(scan.hasNextLine()){
-      String tempLine = scan.nextLine().trim().strip().substring(0, 1);
-      if(!tempLine.trim().contains(";")){
+      String tempLine = scan.nextLine().trim().strip();
+      String temp = tempLine.substring(0, 1);
+      if(!temp.trim().contains(";")){
         result += tempLine;
       }
     }
-    
+    //System.out.println(result);
     return result;
   }
 
+  //El defun de este metodo
   private List<Object> parseExpresion(Scanner tempScan){
     List<Object> tempList = new LinkedList<Object>();
     while(tempScan.hasNext()){
@@ -116,11 +118,10 @@ public class Interprete {
         parentesis.pop();
         return tempList;
       }
-      /*
       else if(temp.equals("defun"))
       {
         crearFuncion(tempScan);
-      }*/
+      }
       else if(!temp.isBlank()){
         tempList.add(temp);
       }
@@ -128,22 +129,81 @@ public class Interprete {
     return tempList;
   }
 
-/*
-  public void crearFuncion(Scanner tempScan)
+  //Este metodo
+  public String crearFuncion(Scanner tempScan)
   {
     int cont = 0;
+    Stack<String> tempStack = new Stack<String>();
     Funcion funcion = new Funcion();
-    String temp = tempScan.next();
     boolean funcCreated = false;
-    while(!funcCreated){
+    boolean funcBody = false;
+    String contenido = ParseFuncion(tempScan);
+    Scanner tScan = new Scanner(contenido);
+    String body = "";
+    while(!funcCreated && tScan.hasNext()){
+      //System.out.println(cont);
+      String temp = tScan.next();
+      if(temp.equals("(")){
+        tempStack.push(temp);
+      }
+      else if(temp.equals(")")){
+        tempStack.pop();
+      }
       if(!temp.isBlank()){
-        if(cont == 0){
+        if(cont == 0 && !temp.equals("(")){
           funcion.setNombre(temp);
           cont++;
         }
+        else if(cont == 1){
+          if(!temp.equals("(") && !temp.equals(")"))
+            funcion.addParameter(temp);
+          else if(temp.equals(")"))
+            cont++;
+        }
+        else{
+          if(!tempStack.empty()){
+            body += " " + temp+" ";
+          }
+          else{
+            funcion.setTasks(body);
+            funcBody = true;
+          }
+        }
+
+        if(funcBody && tempStack.empty()){
+          funcCreated = true;
+        }
       }
     }
-    
+
+    System.out.println(funcion.getActions());
     funciones.put(funcion.getNombre(), funcion);
-  }*/
+
+    return "";
+  }
+
+  //Este metodo
+  private String ParseFuncion(Scanner tempScan){
+    Stack<String> tempStack = new Stack<String>();
+    String res = "(";
+    tempStack.push("(");
+    boolean endFunc = false;
+    while(tempScan.hasNext() && !endFunc){
+      String next = tempScan.next();
+      //System.out.println(next);
+      if(next.equals("(")){
+        tempStack.push(next);
+      }
+      else if(next.equals(")")){
+        tempStack.pop(); 
+      }
+      res += " " + next + " ";
+
+      if(tempStack.empty()){
+        endFunc = false;
+      }
+    }
+
+    return res;
+  }
 }

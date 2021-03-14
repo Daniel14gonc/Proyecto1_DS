@@ -45,7 +45,7 @@ public class Converter {
     }
   }
 
-  public static boolean Operadores(char Dato) {
+  public boolean Operadores(char Dato) {
 
     if (Dato == '+' || Dato == '-' || Dato == '*' || Dato == '/' || Dato == '^') {
       return true;
