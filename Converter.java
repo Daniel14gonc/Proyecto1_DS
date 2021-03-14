@@ -1,27 +1,26 @@
 import java.util.*;
 
-public class Converter{
+public class Converter {
 
   private static Converter converterInstance;
 
-  private Converter(){
+  private Converter() {
 
   }
 
-  public static Converter gConverter(){
-    if(converterInstance == null){
+  public static Converter gConverter() {
+    if (converterInstance == null) {
       converterInstance = new Converter();
     }
 
     return converterInstance;
   }
 
-  public static String ConverterPrePos(String Prefix) {
+  public String ConverterPrePos(String Prefix) {
 
     Stack<String> almacen = new Stack<String>();
 
-    try
-    {
+    try {
       for (int i = Prefix.length() - 1; i >= 0; i--) {
         if (Operadores(Prefix.charAt(i))) {
 
@@ -35,15 +34,13 @@ public class Converter{
 
           String PostfixLine = Signo1 + Signo2 + Prefix.charAt(i);
           almacen.push(PostfixLine);
-   
+
         } else {
           almacen.push(Prefix.charAt(i) + "");
         }
       }
-        return almacen.peek();
-    }
-    catch(Exception e)
-    {
+      return almacen.peek();
+    } catch (Exception e) {
       return "Expresión invalida";
     }
   }
@@ -56,11 +53,12 @@ public class Converter{
     return false;
   }
 
-  /*public static void main(String[] args) {
-
-    String BPrueba = "+12*3/2";
-    System.out.println("\nOperacion en Prefix: " + BPrueba);
-    System.out.println("Operacion en Postfix: " + ConverterPrePos(BPrueba) + "\n");
-  }*/
+  /*
+   * public static void main(String[] args) {
+   * 
+   * String BPrueba = "+12*3/2"; System.out.println("\nOperacion en Prefix: " +
+   * BPrueba); System.out.println("Operacion en Postfix: " +
+   * ConverterPrePos(BPrueba) + "\n"); }
+   */
 
 }

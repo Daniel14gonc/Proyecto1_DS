@@ -20,10 +20,22 @@ public class Consola {
   }
   
   public void Start(){
+
+    System.out.println();
     while(true){
-      System.out.print("CL-USER >");
+      System.out.print("CL-USER > ");
       String input = scan.nextLine();
-      interprete.interpretar(input);
+      if(input.contains("txt")){
+        ArrayList<String> operaciones = leerArchivo(input);
+        System.out.print("\nResultados: \n");
+        for(String da : operaciones){
+          interprete.interpretar(da);
+        }
+        System.out.println();
+      }
+      else {
+        interprete.interpretar(input);
+      }
     }
   }
 
@@ -49,9 +61,8 @@ public class Consola {
     return Info;
   }
 
-  /*for(String linea: Info){
-      Evaluar(linea);
-  }*/
+  
+
 }
 
 

@@ -4,7 +4,7 @@
  * @author Grupo#1
  * @version 1
  */
- 
+ /*
 public class Evaluar implements Operable, Comparable{
 
   public String evaluacion(String expresion)
@@ -52,4 +52,4 @@ public class Evaluar implements Operable, Comparable{
   }
 
 
-}
+}*/
