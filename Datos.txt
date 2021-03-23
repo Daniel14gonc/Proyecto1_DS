@@ -1,2 +1,3 @@
-(defun hola (n1 n2) 
-  (cond ((> 4 3) (+ 2 3))))
+(defun hola (n1 n2)
+  (setq a 10)
+  (cond ((> a 3) (+ 2 3))))

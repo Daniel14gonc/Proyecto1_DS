@@ -75,6 +75,9 @@ public class Interprete {
                   }
                   j+=1;
                 }
+              }else if(tempList.get(0).equals("setq"))
+              {
+                comparable.Setq((String)tempList.get(1), (String)tempList.get(2));
               }
               else{
                 acum+= evaluar((List<Object>)ListEvaluar.get(i)) + " ";

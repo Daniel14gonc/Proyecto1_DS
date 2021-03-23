@@ -28,6 +28,7 @@ public class Comparable
       SetqValores.remove(variable);
       SetqValores.put(variable, valor);
     }
+
   }
 
   public String Equal(int a, int b)

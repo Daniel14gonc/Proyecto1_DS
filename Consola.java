@@ -37,6 +37,9 @@ public class Consola {
         System.out.println();*/
       } else if (input.contains("lisp")){
         ArrayList<String> operaciones = leerArchivo(input);
+        String temporal = ArchivoToString(operaciones);
+        interprete.interpretar(temporal); 
+
       }
       else {
         interprete.interpretar(input);
