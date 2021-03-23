@@ -4,7 +4,6 @@
  * @author Grupo#1
  * @version 1
  */
-
 import java.util.*;
 public class Predicados {
   

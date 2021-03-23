@@ -13,13 +13,16 @@ public class Interprete {
   private List<Object> operations;
   private CalculadoraGeneral calculadora;
   private Converter converter;
+  private Comparable comparable;
 
   public Interprete(){
     funciones = new HashMap<String, Funcion>();
+    comparable = new Comparable();
   }
 
   public String interpretar(String expresion){
     String result = parse(expresion);
+    //System.out.println(operations);
     if(result.equals("error"))
       return result;
 
@@ -33,9 +36,6 @@ public class Interprete {
     //System.out.print("Pase con exito interpretar \n");//ELIMINAR TRAS DEBUGUEAR
     return "";
   }
-
-
-
 
   public String evaluar(List<Object> ListEvaluar) throws Exception{
     try{
@@ -63,7 +63,22 @@ public class Interprete {
           {
             if(ListEvaluar.get(i) instanceof List)
             {
-              acum+= evaluar((List<Object>)ListEvaluar.get(i)) + " ";
+              List<Object> tempList =(List) ListEvaluar.get(i);
+              if(tempList.get(0).equals("cond")){
+                int j = 1;
+                boolean finish = false;
+                while(j< tempList.size() && !finish){
+                  List<Object> tList = (List)((List)tempList.get(j)).get(0);
+                  if(comparable.Cond(convert(tList)).equalsIgnoreCase("t")){
+                    acum += evaluar((List)((List)tempList.get(j)).get(1)) + " ";
+                    finish = true;
+                  }
+                  j+=1;
+                }
+              }
+              else{
+                acum+= evaluar((List<Object>)ListEvaluar.get(i)) + " ";
+              }
             }
 
           }
@@ -94,6 +109,16 @@ public class Interprete {
     catch(Exception e){
       throw new Exception(e.getMessage());
     }
+  }
+
+
+
+  private String convert(List<Object> condition){
+    String res = "";
+    for(int i = 0; i< condition.size(); i++){
+      res += condition.get(i) + " ";
+    }
+    return res;
   }
 
   private List<Object> parseFunction(String body){
@@ -179,8 +204,6 @@ public class Interprete {
     }
   }
 
-
-
   //Lista []
   //Este metodo
   public void crearFuncion(Scanner tempScan)
@@ -257,4 +280,11 @@ public class Interprete {
 
     return res;
   }
+
+  private void parseCond(Scanner tempScan){
+
+  }
+
+  
+
 }
