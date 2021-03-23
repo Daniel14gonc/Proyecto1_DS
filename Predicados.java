@@ -14,9 +14,23 @@ public class Predicados {
     return RespuestaFinal;
 
   }
-  private boolean atom(){
+  private boolean AtomP(String expresion){
 
-    boolean ResultadoAtom = false;
+    boolean ResultadoAtom;
+    boolean listV = false;
+    boolean atomV = false;
+
+    if(atomV){
+      //T
+      ResultadoAtom = true;
+    } else if (atomV && listV){
+      System.out.println("No es posible evaluar la expresion");
+      ResultadoAtom = false;
+    } else {
+      //Nil
+      ResultadoAtom = false;
+    }
+
     return ResultadoAtom;
 
   }
@@ -37,5 +51,6 @@ public class Predicados {
     boolean ResultadoMenor = false;
     return ResultadoMenor;
   }
+
 
 }

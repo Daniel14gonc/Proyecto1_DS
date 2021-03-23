@@ -21,7 +21,7 @@ public class Calculadora implements CalculadoraGeneral{
         //Post: Crear un vector que almacene los resultados de las operaciones. Crear strings
         //      para determinar si el string es operador u operadno.
         nums = "0123456789";
-        ops = "+-*/";
+        ops = "+-*/^";
     }
 
     public static CalculadoraGeneral singletonCalculadora(){
@@ -37,19 +37,24 @@ public class Calculadora implements CalculadoraGeneral{
         //Pre: Validar que se haya ingresado un numero.
         //Post: Determinar si se debe almacenar el numero en el vector o se debe hacer una operacion.
         stack = new Stack<Integer>();
-        try {            
-            for(int i = 0; i<expresion.length(); i++){
+        try {
+            String res = "";
+            for(int i =0; i< expresion.length(); i++){
                 //Obtener cada caracter del string.
-                char op = expresion.charAt(i);
+                Character op = expresion.charAt(i);
                 //Determinar si es un operador, operando o un termino no valido.
                 if(nums.contains(Character.toString(op))){
-                    stack.push(Character.getNumericValue(op));
+                    res += op;
                 }
                 else if(ops.contains(Character.toString(op))){
-                    postFixEvalution(op);
+                  postFixEvaluation(op);
                 }
-                else if(op != ' '){
-                    return "Error: No se pudo realizar la operacion por invalidez de simbolos";
+                else if(Character.toString(op).isBlank() && !res.isEmpty()){
+                  stack.push(Integer.parseInt(res));
+                  res = "";
+                }
+                else{
+                  return "Error: No se pudo realizar la operacion por invalidez de simbolos";
                 }
             }
 
@@ -73,7 +78,7 @@ public class Calculadora implements CalculadoraGeneral{
 
     /**Metodo que permite realizar las operaciones determinadas por los operadores
      * de la expresion postfix.*/
-    private boolean postFixEvalution(char operator) throws ArithmeticException{
+    private boolean postFixEvaluation(char operator) throws ArithmeticException{
         //Pre: Validar que el stack no este vacio y que los operandos sean numeros.
         //Post: Realizar la operacion indicada
         try{
@@ -97,6 +102,8 @@ public class Calculadora implements CalculadoraGeneral{
                         case '/':
                             stack.push(op1 / op2);
                             break;
+                        case '^':
+                            stack.push((int)Math.pow(op1, op2));
                     }
                     return true;
                 }

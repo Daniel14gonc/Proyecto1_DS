@@ -28,10 +28,8 @@ public class Consola {
       if(input.contains("txt")){
         ArrayList<String> operaciones = leerArchivo(input);
         String temporal = ArchivoToString(operaciones);
-        System.out.print("\nResultados: \n");
-        for(String da : operaciones){
-          interprete.interpretar(da);
-        }
+        //System.out.print("\nResultados: \n");
+        interprete.interpretar(temporal);        
         /*System.out.println();
         System.out.println();
         System.out.println(temporal);

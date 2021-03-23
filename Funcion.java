@@ -33,7 +33,7 @@ public class Funcion {
   }
 
 
-  public String getActions(){
+  public String getTasks(){
 
     return tasks;
 
