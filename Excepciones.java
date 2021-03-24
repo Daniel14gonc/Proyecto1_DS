@@ -23,7 +23,7 @@ public class Excepciones extends Exception{
 
     /**
     * Constructor
-    * @param MensajeError: String del mensaje de
+    * @param MensajeError: String del mensaje a mostrar en caso de una excepcion
     */
     public Excepciones(String MensajeError){
         super(MensajeError);

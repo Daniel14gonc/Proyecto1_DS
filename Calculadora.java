@@ -80,14 +80,16 @@ public class Calculadora implements CalculadoraGeneral{
                 /**
                 * Obtener cada caracter del string.
                 */
-                Character op = expresion.charAt(i);
+                
+                Character op = expresion.charAt(i);                
                 /**
                 * Determinar si es un operador, operando o un termino no valido.
                 */
-                if(nums.contains(Character.toString(op)) || op.equals('.')){
+                if(nums.contains(Character.toString(op)) || op.equals('.') || ops.contains(Character.toString(op)) && (i+1) != expresion.length()){ 
+                   
                     res += op;
                 }
-                else if(ops.contains(Character.toString(op))){
+                else if(ops.contains(Character.toString(op)) && (i+1) == expresion.length()){
                   postFixEvaluation(op);
                 }
                 else if(Character.toString(op).isBlank() && !res.isEmpty()){
@@ -140,7 +142,6 @@ public class Calculadora implements CalculadoraGeneral{
                 */
                 Double op2 = stack.pop();
                 Double op1 = stack.pop();
-
                 /**
                 * Se determina la operacion por hacer.
                 */

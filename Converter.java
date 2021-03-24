@@ -66,27 +66,42 @@ public class Converter {
       * y se almacena en el Stack
       */
       String res = "";
+      boolean number = false;
       for (int i = Prefix.length() - 1; i >= 0; i--) {
-        if (Operadores(Prefix.charAt(i))) {
+        if (Operadores(Prefix.charAt(i)) && i == 0) {
 
           String Signo1;
           String Signo2;
+          
+          if(almacen.peek().equals("-"))
+          Signo1 = almacen.pop()+almacen.pop();
+          else
+          Signo1 = almacen.pop();
 
-          Signo1 = almacen.peek();
-          almacen.pop();
-          Signo2 = almacen.peek();
-          almacen.pop();
+          if(almacen.peek().equals("-"))
+          Signo2 = almacen.pop()+almacen.pop();
+          else
+          Signo2 = almacen.pop();
+
+          
+          
+
+          
+
 
           String PostfixLine = Signo1 +" "+ Signo2 + " " + Prefix.charAt(i);
           almacen.push(PostfixLine);
 
         } 
+
+        //+ - 5 5
+        
         
         /**
         * Se evalua que no existan puntos o espacios vacios en la expresion
         * para evitar errores al momento de calcular
         */
-        else if(nums.contains(Character.toString(Prefix.charAt(i))) || Character.toString(Prefix.charAt(i)).equalsIgnoreCase(".")){
+        else if(nums.contains(Character.toString(Prefix.charAt(i))) || Character.toString(Prefix.charAt(i)).equalsIgnoreCase(".") || Operadores(Prefix.charAt(i))){
           res = Prefix.charAt(i) + res;
         }
         else if(Character.toString(Prefix.charAt(i)).isBlank() && !res.isEmpty()){

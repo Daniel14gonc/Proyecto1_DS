@@ -75,7 +75,8 @@ public class Consola {
         * De no ser un archivo, evalua la linea ingresada
         */
         else {
-          interprete.interpretar(input);
+          String resultado = interprete.interpretar(input);
+          System.out.println(resultado);
         }
       }
       catch(Exception e){
