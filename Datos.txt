@@ -1,3 +1,27 @@
-(defun hola (n1 n2)
-  (setq a 10)
-  (cond ((> a 3) (+ 2 3))))
+(defun cel (grados) (+ (* grados 1.8) 32))
+
+
+(defun adios (algo) 
+    (cond ((< algo 2) (+ 2 3))))
+
+
+(defun halo (algo) 
+    (cond ((= algo 1.0) (+ algo 2))(t (+(halo(- algo 1)) algo ))))
+
+(defun factorial (x)
+  (cond ((= x 1.0) (1.0))
+   ((= x 0.0) (1.0))
+   (t
+    (*(factorial (- x 1)) x ))))
+
+
+(defun fac (x)
+  (cond ((= x 1.0) (1.0))
+   ((= x 0.0) (1.0))
+   (t
+    (*x (fac (- x 1))  ))))
+
+(defun fibo (x) 
+  (cond ((= x 0) (0))
+    ((= x 1) (1)) 
+    (t (+ (fibo(- x 1)) (fibo(- x 2))) )))

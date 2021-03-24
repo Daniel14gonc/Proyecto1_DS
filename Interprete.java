@@ -14,24 +14,29 @@ public class Interprete {
   private CalculadoraGeneral calculadora;
   private Converter converter;
   private Comparable comparable;
+  private Predicados predicados;
+  private Stack<String> actualFunc;
 
   public Interprete(){
     funciones = new HashMap<String, Funcion>();
     comparable = new Comparable();
+    predicados= new Predicados();
+    actualFunc = new Stack<String>();
   }
 
-  public String interpretar(String expresion){
+  public String interpretar(String expresion) throws Exception{
+    
     String result = parse(expresion);
     //System.out.println(operations);
     if(result.equals("error"))
       return result;
 
     try{
-      //System.out.println(operations.isEmpty());
+      System.out.println(operations.isEmpty());
       System.out.println(evaluar(operations));
     }
     catch(Exception e){
-      
+      throw new Exception(e.getMessage());
     }
     //System.out.print("Pase con exito interpretar \n");//ELIMINAR TRAS DEBUGUEAR
     return "";
@@ -42,6 +47,8 @@ public class Interprete {
       //Incongruencia entre defun y operaciones
       if(!ListEvaluar.isEmpty())
       {
+        boolean funcEval = false;
+        System.out.println(ListEvaluar +" siuuu");
         String acum = "";
         calculadora = Calculadora.singletonCalculadora();
         converter = Converter.gConverter();
@@ -52,12 +59,34 @@ public class Interprete {
           {
             String temp = (String)ListEvaluar.get(i);
             if(funciones.containsKey(temp)){
-              String body = funciones.get(temp).getTasks();
+              actualFunc.push(temp);
+              i++;
+              String params = "";
+              while(i < ListEvaluar.size()){
+                if(ListEvaluar.get(i) instanceof List){
+                  params += evaluar((List) ListEvaluar.get(i));
+                }
+                else if(ListEvaluar.get(i) instanceof String){
+                  params += (String) ListEvaluar.get(i) + " ";
+                }
+                i++;
+
+              }
+              //System.out.println("ahhhh");
+              System.out.println(params + " params");
+              funciones.get(actualFunc.peek()).setParameters(params);
+              String body = funciones.get(actualFunc.peek()).getTasks();
               List<Object> tempList = parseFunction(body);
-              acum += evaluar(tempList);
+              funcEval = true;
+              acum += evaluar(tempList) + " ";
+              //funcEval = false;
             }
-            else
+            else if(!actualFunc.isEmpty() && funciones.get(actualFunc.peek()).isParameter(temp)){
+              acum += funciones.get(actualFunc.peek()).getParameter(temp) + " ";
+            }
+            else{
               acum+= temp + " ";
+            }
           }
           else if(ListEvaluar.get(i) instanceof Object)
           {
@@ -68,42 +97,67 @@ public class Interprete {
                 int j = 1;
                 boolean finish = false;
                 while(j< tempList.size() && !finish){
-                  List<Object> tList = (List)((List)tempList.get(j)).get(0);
-                  if(comparable.Cond(convert(tList)).equalsIgnoreCase("t")){
-                    acum += evaluar((List)((List)tempList.get(j)).get(1)) + " ";
-                    finish = true;
+                  if(((List) tempList.get(j)).get(0) instanceof List){
+                    List<Object> tList = (List)((List)tempList.get(j)).get(0);
+                    System.out.println(tList);
+                    for(int a = 0; a< tList.size(); a++){
+                      String temp = (String) tList.get(a);
+                      System.out.println(temp);
+                      if(!actualFunc.isEmpty() && funciones.get(actualFunc.peek()).isParameter(temp)){
+                        tList.set(a, funciones.get(actualFunc.peek()).getParameter(temp));
+                      }
+                    }
+                    if(comparable.Cond(convert(tList)).equalsIgnoreCase("t")){
+                      acum += evaluar((List)((List)tempList.get(j)).get(1)) + " ";
+                      finish = true;
+                    }
+                  
+                    j+=1;
                   }
-                  j+=1;
+                  else if(((List) tempList.get(j)).get(0) instanceof String){
+                    String temp = (String)((List)tempList.get(j)).get(0);
+                    if(temp.equals("t") && j == tempList.size()-1){
+                      acum += evaluar((List)((List)tempList.get(j)).get(1)) + " ";
+                      finish = true;
+                    }
+                  }
                 }
-              }else if(tempList.get(0).equals("setq"))
+              }
+              /*
+              else if(((String)tempList.get(0)).equalsIgnoreCase("quote"))
+              {
+                System.out.println( predicados.quote(tempList.get(1)));
+              }
+              else if(tempList.get(0).equals("setq"))
               {
                 comparable.Setq((String)tempList.get(1), (String)tempList.get(2));
               }
-              else{
+              else if(((String)tempList.get(0)).equalsIgnoreCase("atom"))
+              {
+                System.out.println( predicados.Atom((String)tempList.get(1)));
+              }*/
+              else
+              {
                 acum+= evaluar((List<Object>)ListEvaluar.get(i)) + " ";
               }
             }
 
           }
-        
-          /*
-          switch(acum) 
-          {
-            case acum.Trim.Substring(0.4)== "defun":
-              Funcion funcion = new Funcion();
-            default:
-              res = converter.ConverterPrePos(acum);
-            break;
-          }*/
-
         }
+
+        if(funcEval){
+          funciones.get(actualFunc.peek()).deleteValues();     
+          actualFunc.pop();
+          funcEval = false;
+        }
+        System.out.println(acum);
         if(acum.trim().contains(" ")){
           res = converter.ConverterPrePos(acum);
           //System.out.println(res);
           return calculadora.Calculo(res);
         }
         else
-          return acum;
+          return acum.replaceAll("\\s","");
 
       }
       return "";
@@ -185,7 +239,21 @@ public class Interprete {
       {
         crearFuncion(tempScan);
         return tempList;
+
+        //Sigue en proceso, tiene algunas fallas
+      } /*else if(temp.equalsIgnoreCase("quote") || temp.equals("'"))
+      {
+
+        String conte = ParsePredicados(tempScan);
+        conte=predicados.quote(conte);
+        System.out.print(conte);
+        
       }
+      else if(temp.equalsIgnoreCase("atom"))
+      {
+        System.out.print(predicados.Atom(ParsePredicados(tempScan)));
+      }*/
+      
       else if(!temp.isBlank()){
         tempList.add(temp);
       }
@@ -259,6 +327,17 @@ public class Interprete {
     funciones.put(funcion.getNombre(), funcion);
   }
 
+  private String ParsePredicados(Scanner tempScan)
+  {
+    String next="";
+    while(tempScan.hasNext())
+    {
+      System.out.println("Esto es next: "+next+"\n");
+      next+= tempScan.next();
+    }
+    return next;
+  }
+
   //Este metodo
   private String ParseFuncion(Scanner tempScan){
     Stack<String> tempStack = new Stack<String>();
@@ -288,6 +367,26 @@ public class Interprete {
 
   }
 
-  
+  /*private String ContenidoObtenido(Scanner tempScan){
+    Stack<String> tempStack = new Stack<String>();
+    String res = "";
+    boolean endFunc = false;
+    while(tempScan.hasNext() && !endFunc){
+      String next = tempScan.next();
+      //System.out.println(next);
+      if(next.equals("(")){
+        tempStack.push(next);
+      }
+      else if(next.equals(")")){
+        tempStack.pop(); 
+      }
+      res += next + " ";
+
+      if(tempStack.empty()){
+        endFunc = true;
+      }
+    }
+    return res;
+  }*/
 
 }

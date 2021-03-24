@@ -10,6 +10,8 @@
 
 public interface CalculadoraGeneral {
 
-    /**Metodo que permite evaluar expresiones en postfix.*/
+    /**Metodo que permite evaluar expresiones en postfix.
+    * @param: String que contiene una operacion a calcular
+    */
     public String Calculo(String expresion) throws Exception;
 }
