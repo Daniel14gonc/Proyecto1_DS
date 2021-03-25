@@ -135,9 +135,9 @@ public class Interprete {
             else if(!actualFunc.isEmpty() && funciones.get(actualFunc.peek()).isParameter(temp)){
               acum += funciones.get(actualFunc.peek()).getParameter(temp) + " ";
             }
-            /*else if(Comparable.isValue(temp)){
+            else if(Comparable.isValue(temp)){
               acum += Comparable.getValue(temp) + " ";
-            }*/
+            }
             else{
               acum+= temp + " ";
             }
