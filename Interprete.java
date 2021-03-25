@@ -135,6 +135,9 @@ public class Interprete {
             else if(!actualFunc.isEmpty() && funciones.get(actualFunc.peek()).isParameter(temp)){
               acum += funciones.get(actualFunc.peek()).getParameter(temp) + " ";
             }
+            /*else if(Comparable.isValue(temp)){
+              acum += Comparable.getValue(temp) + " ";
+            }*/
             else{
               acum+= temp + " ";
             }
@@ -158,7 +161,10 @@ public class Interprete {
                         tList.set(a, funciones.get(actualFunc.peek()).getParameter(temp));
                       }
                     }
-                    if(comparable.Cond(convert(tList)).equalsIgnoreCase("t")){
+                    List<Object> temporal = new LinkedList<Object>();
+                    temporal.add(tList);
+                    String ev = evaluar(temporal);
+                    if(comparable.Cond(ev).equalsIgnoreCase("t")){
                       acum += evaluar((List)((List)tempList.get(j)).get(1)) + " ";
                       finish = true;
                     }
@@ -166,7 +172,7 @@ public class Interprete {
                     j+=1;
                   }
                   else if(((List) tempList.get(j)).get(0) instanceof String){
-                    String temp = (String)((List)tempList.get(j)).get(0);
+                    String temp = (String)((List)tempList.get(j)).get(0);                 
                     if(temp.equals("t") && j == tempList.size()-1){
                       acum += evaluar((List)((List)tempList.get(j)).get(1)) + " ";
                       finish = true;
@@ -174,7 +180,7 @@ public class Interprete {
                   }
                 }
               }
-              else if(((String)tempList.get(0)).equalsIgnoreCase("quote")||((String)tempList.get(0)).equalsIgnoreCase("'"))
+              else if(tempList.get(0).equals("quote")||tempList.get(0).equals("'"))
               {
                 acum = predicados.quote(tempList.get(1));
                 System.out.println(acum);
@@ -193,12 +199,78 @@ public class Interprete {
                   setq += (String)tempList.get(2);
                 }
                 comparable.Setq((String)tempList.get(1), setq);
-
-
-
                 
               }
-              else if(((String)tempList.get(0)).equalsIgnoreCase("atom"))
+              else if(tempList.get(0).equals("<"))
+              {
+                String menor = "";
+                String menor1 = "";
+                if(tempList.get(1) instanceof List){
+                  List<Object> temporal = new LinkedList<Object>();
+                  temporal.add((List) tempList.get(1));
+                  menor = evaluar(temporal);
+                }
+                if(tempList.get(2) instanceof List){
+                  List<Object> temporal = new LinkedList<Object>();
+                  temporal.add((List) tempList.get(2));
+                  menor1 = evaluar(temporal);
+                }
+                if(tempList.get(1) instanceof String){
+                  menor = (String)tempList.get(1);
+                }
+                if(tempList.get(2) instanceof String){
+                  menor1 = (String)tempList.get(2);
+                }
+                return predicados.menor(menor,menor1);
+              }
+              else if(tempList.get(0).equals(">"))
+              {
+                String mayor = "";
+                String mayor1 = "";
+                if(tempList.get(1) instanceof List){
+                  List<Object> temporal = new LinkedList<Object>();
+                  temporal.add((List) tempList.get(1));
+                  mayor = evaluar(temporal);
+                }
+                if(tempList.get(2) instanceof List){
+                  List<Object> temporal = new LinkedList<Object>();
+                  temporal.add((List) tempList.get(2));
+                  mayor1 = evaluar(temporal);
+                }
+                if(tempList.get(1) instanceof String){
+                  mayor = (String)tempList.get(1);
+                }
+                if(tempList.get(2) instanceof String){
+                  mayor1 = (String)tempList.get(2);
+                }
+                return predicados.mayor(mayor,mayor1);
+              }
+              else if(tempList.get(0).equals("equal")||tempList.get(0).equals("="))
+              {
+                String equal = "";
+                String equal1 = "";
+                if(tempList.get(1) instanceof List){
+                  List<Object> temporal = new LinkedList<Object>();
+                  temporal.add((List) tempList.get(1));
+                  equal = evaluar(temporal);
+                }
+                if(tempList.get(2) instanceof List){
+                  List<Object> temporal = new LinkedList<Object>();
+                  temporal.add((List) tempList.get(2));
+                  equal1 = evaluar(temporal);
+                }
+                if(tempList.get(1) instanceof String){
+                  equal = (String)tempList.get(1);
+                }
+                if(tempList.get(2) instanceof String){
+                  equal1 = (String)tempList.get(2);
+                }
+
+                return predicados.Equalx(equal, equal1);
+                //System.out.println(predicados.Equalx(equal, equal1));
+                
+              }
+              else if(tempList.get(0).equals("atom"))
               {
                 String atom = "";
                 if(tempList.get(1) instanceof List){
@@ -209,7 +281,22 @@ public class Interprete {
                 else if(tempList.get(1) instanceof String){
                   atom += (String)tempList.get(1);
                 }
-                System.out.println(predicados.Atom(atom));
+                return predicados.Atom(atom);
+                //System.out.println(predicados.Atom(atom));
+              }
+              else if(tempList.get(0).equals("listp"))
+              {
+                String listp = "";
+                if(tempList.get(1) instanceof List){
+                  List<Object> temporal = new LinkedList<Object>();
+                  temporal.add((List) tempList.get(1));
+                  listp += evaluar(temporal);
+                }
+                else if(tempList.get(1) instanceof String){
+                  listp += (String)tempList.get(1);
+                }
+                return predicados.Listp(listp); 
+                //System.out.println(predicados.Listp(listp));
               }
               else
               {
@@ -300,7 +387,6 @@ public class Interprete {
       temp = temp.replaceAll("\\*", "\\ * ");
       temp = temp.replaceAll("\\/", "\\ / ");
       temp = temp.replaceAll("\\^", "\\ ^ ");
-      temp = temp.replaceAll("\\'", "\\ ' ");
       Scanner scan = new Scanner(temp);
       operations = parseExpresion(scan);
       //CheckList(operations);

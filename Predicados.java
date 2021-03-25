@@ -66,7 +66,7 @@ public class Predicados {
       ResultadoAtom="- EVAL: variable "+expresion+" has no value";
     }else if(verificar.length==1)
     {
-      ResultadoAtom="T\n";
+      ResultadoAtom="T";
     }
 
     return ResultadoAtom;
@@ -80,14 +80,16 @@ public class Predicados {
   */
   public String Listp(String expresion)
   {
+    
     String resultadoListp="";
     String Resultado= Atom(expresion);
-    if(Resultado.equals("Nil"))
+    if(Resultado.equalsIgnoreCase("nil"))
     {
       resultadoListp="T";
-    }else if(Resultado.equals("T"))
+    }else if(Resultado.equalsIgnoreCase("t"))
     {
       resultadoListp="Nil";
+      //System.out.println("entre");
     }
     else
     {
@@ -96,4 +98,107 @@ public class Predicados {
     
     return resultadoListp;
   }
+
+  public String Equalx(String a,String b) throws Exception
+  {
+    try{
+      Object v1 = getValue(a);
+      Object v2 = getValue(b);
+      System.out.println(v1);
+      System.out.println(v2);
+      
+      if(v1.equals(v2))
+        return "T";
+      else
+        return "Nil";
+    }
+    catch(Exception e){
+      throw new Exception(e.getMessage());
+    }
+  }
+
+  private Object getValue(String value) throws Exception{
+    try{
+      if(value.trim().substring(0,1).equals("'")){
+      return value;
+      }
+      else if(Comparable.isValue(value)){
+        return Comparable.getValue(value);
+      }
+      else{
+        
+        return (Double.parseDouble(value));  
+      }
+    }
+    catch(Exception e){
+      throw new Exception("Invalidez de simbolos ingresados en equals.");
+    }
+  }
+
+  public String menor(String a, String b)
+  {
+    try
+    {
+      
+      Object v1=getValue(a);
+      Object v2=getValue(b);
+      String menor="Nil";
+
+      if(v1 instanceof String && v2 instanceof String)
+      {
+        if(a.length() < b.length())
+        {
+          menor="T";
+        }
+      }
+      else
+      {
+        
+        if(Double.parseDouble(a)<Double.parseDouble(b))
+        {
+          menor="T";
+        }
+      }
+
+      return menor;
+    }
+    catch(Exception e)
+    {
+      return"Invalidez en comparacion";
+    }
+  }
+
+  public String mayor(String a, String b)
+  {
+    try
+    {
+      Object v1=getValue(a);
+      Object v2=getValue(b);
+      String menor="Nil";
+
+      if(v1 instanceof String && v2 instanceof String)
+      {
+        if(a.length() > b.length())
+        {
+          menor="T";
+        }
+      }
+      else
+      {
+        
+        if(Double.parseDouble(a)>Double.parseDouble(b))
+        {
+          menor="T";
+        }
+      }
+
+      return menor;
+    }
+    catch(Exception e)
+    {
+      return"Invalidez en comparacion";
+    }
+  }
+
+
 }

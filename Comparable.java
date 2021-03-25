@@ -30,6 +30,14 @@ public class Comparable
 
   }
 
+  public static boolean isValue(String value){
+    return SetqValores.containsKey(value);
+  }
+
+  public static String getValue(String value){
+    return SetqValores.get(value);
+  }
+
   /**
   * Método vardefinidas
   * @return: HashMap instanciado en el constructor
@@ -115,6 +123,11 @@ public class Comparable
   */
   public String Cond(String condicion)
   {
+    
+    if(condicion.trim().equalsIgnoreCase("t"))
+          return "t";
+      if(condicion.trim().equalsIgnoreCase("nil"))
+          return "Nil";
     
     /**
     * String del estado default del resultado
