@@ -1,7 +1,8 @@
 Es necesario indicar que nuestro compañero Kenneth Gálvez no tuvo
-participación en el trabajo de la segunda fase de proyecto. Por lo
-tanto no tiene ningún commit en el repositorio. Más que todo les
+participación en el trabajo de la segunda fase de proyecto. En consecuencia
+no tiene ningún commit en el repositorio. Más que todo les
 pedimos que no nos bajen puntos por esto, debido a que en
 múltiples ocasiones nos juntamos a trabajar y conversamos sobre
 los requerimientos que hacían falta, sin embargo no hubo aportes.
-Queda a su discreción tomar las medidas correspondientes.
+Douglas nos indicó que se le iba a poner 0, pero queda a su
+discreción las acciones a tomar.
