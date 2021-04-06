@@ -3,6 +3,13 @@ Sintáxis de LISP
 Es necesario especificar la sintáxis utilizada debido a que hay 
 múltiples diferencias que se pueden encontrar en internet.
 
+Lectura de archivos
+Se debe escribir el nombre del archivo con las funciones
+que se desean realizar. Esto funciona como un loader.
+
+cl-user> Nombre_archivo.txt
+
+
 El cond es de la forma
 
 (cond ((condicion 1) (accion 1))
@@ -16,6 +23,23 @@ El cond es de la forma
 La definición de funciones, los predicados y la creacion de
 variables se realizan de la forma convencional.
 
+Funcion
 (defun nombre (parametros) (cuerpo))
 
+Setq
 (setq variable valor)
+
+Quote
+('valor) o (quote valor)
+
+Atom
+(atom valor)
+
+Lista
+
+(listp valor)
+
+Preferiblemente observar las funciones realizadas en el archivo
+"Funciones.txt" dentro de src. Es necesario compilar las clases
+desde el directorio de src, para poder leer el archivo
+correctamente.

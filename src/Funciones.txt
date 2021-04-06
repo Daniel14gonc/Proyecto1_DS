@@ -1,6 +1,7 @@
 (defun cel (grados) (+ (* grados 1.8) 32))
 
 
+
 (defun factorial (x)
   (cond ((= x 1.0) (1.0))
    ((= x 0.0) (1.0))
