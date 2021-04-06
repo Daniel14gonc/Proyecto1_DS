@@ -1,0 +1,21 @@
+Sintáxis de LISP
+
+Es necesario especificar la sintáxis utilizada debido a que hay 
+múltiples diferencias que se pueden encontrar en internet.
+
+El cond es de la forma
+
+(cond ((condicion 1) (accion 1))
+      ((condicion 2) (accion 2))
+		    .			
+ 		    .
+		    .
+       (t (accion predeterminada)))
+
+
+La definición de funciones, los predicados y la creacion de
+variables se realizan de la forma convencional.
+
+(defun nombre (parametros) (cuerpo))
+
+(setq variable valor)
